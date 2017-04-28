@@ -15,6 +15,7 @@ app.get('/', function (req, res) {
 
 
   find_available_work_hours(1,"12/06/2017","12/09/2017");
+  find_available_work_hours(1,"03/06/2017","03/31/2017");
 
 
   res.send('no err');
@@ -37,7 +38,7 @@ const find_available_work_hours = function(userId, from, to) {
   const standardHours = [0, 8, 8, 8, 8, 8, 0];
 
   //Return any overrides that overlap with our query
-  const userOverrides = userData.filter((entry) => { return entry.user === userId && (fromDate <= new Date(entry.to)) && (toDate >= new Date(entry.from)) });
+  const userOverrides = getOverrides(userId, from, to);
 
   console.log(userOverrides);
   //let currentDate = fromDate;
@@ -76,4 +77,14 @@ const find_available_work_hours = function(userId, from, to) {
 
   //return array of obj {date, total hours}
   return results;
+}
+
+/* Stub for overrides query */
+
+const getOverrides = function(id, from, to) {
+  const overrides = userData.filter((entry) => { return entry.user === id && (from <= new Date(entry.to)) && (to >= new Date(entry.from)) });
+
+  //holidays
+
+  return overrides;
 }
